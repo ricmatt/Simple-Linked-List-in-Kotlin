@@ -77,7 +77,7 @@ class LinkedList<A> {
             thirdInLine?.previous = newNode
             lastNode()
             // Makes a new node and changes pointers based on index.
-        }
+        } else head = newNode
     }
 
     fun removeNode(deletedNode: Node<A>) {
@@ -142,6 +142,22 @@ class LinkedList<A> {
 
         combinedList.lastNode()
         return combinedList
+    }
+
+    fun remark(index: Int, value: A) {
+        val oldNode = nodeAtIndex(index)
+        val newNode = Node(value)
+        val oldPrev = oldNode?.previous
+        val oldNext = oldNode?.next
+        if (oldNode != null) {
+            oldPrev?.next = newNode
+            newNode.previous = oldPrev
+            newNode.next = oldNext
+            oldNext?.previous = newNode
+            lastNode()
+
+        } else head = newNode
+
     }
 
     override fun toString(): String {
@@ -236,7 +252,7 @@ fun main() {
     ingredientList.append("sometimes Caramelized Onions")
     println(ingredientList)
 
-    println("""Together they make my "Everything except the kitchen sink chili": """)
+    println("""Together they make my "Everything but the kitchen sink chili": """)
 
     val fullList = LinkedList<String>()
 
@@ -250,6 +266,17 @@ fun main() {
     fullList.lastNode()
 
     println("Penultimate: ${fullList.tail?.previous?.value}")
+
+
+    println("For the southwest version: ")
+
+    fullList.remark(4, "Black olives")
+    fullList.remark(8, "Corn")
+    fullList.remark(9, "canned Chipotles in Adobo sauce")
+    fullList.remark(17, "or sometimes a sprinkle of any cheese and fresh onions")
+    println(fullList)
+
+
 
 
 
