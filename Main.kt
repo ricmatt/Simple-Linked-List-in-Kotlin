@@ -35,7 +35,7 @@ class LinkedList<A> {
 
     fun push(value: A) {
         head = Node(value = value, next = head)
-        var node = head!!.next
+        val node = head!!.next
         node?.previous = Node(value)
         lastNode()
         // Makes a new node and points the next at the head of the list.
@@ -129,6 +129,21 @@ class LinkedList<A> {
         head = null
     }
 
+    fun connectLists(firstList: LinkedList<A>, secondList: LinkedList<A>,combinedList: LinkedList<A>): LinkedList<A> {
+        combinedList.head = firstList.head
+        // Makes the new list start as a copy of the first.
+
+        combinedList.lastNode()
+        combinedList.tail?.next = secondList.head
+        // Finds the tail of the new list and sets it next to point at the head of the second list.
+
+        combinedList.tail?.next?.previous = combinedList.tail
+        // Points previous of the second list head at the tail of the new list.
+
+        combinedList.lastNode()
+        return combinedList
+    }
+
     override fun toString(): String {
         var node = head
         var list = ""
@@ -186,15 +201,56 @@ fun main() {
     spiceList.removeAtIndex(5)
     println(spiceList)
     spiceList.lastNode()
-
+// Use the lastNode function to make sure the tail is on the correct node.
 
     println("The list is now " + spiceList.getCountIterative() + " items long.")
-
 
     println("The last node is: ${spiceList.tail?.value}")
     println("Penultimate: ${spiceList.tail?.previous?.value}")
 
     spiceList.removeAll()
     println("The list is now " + spiceList.getCountRecursive() + " items long.")
+
+    println("Nah, let's bring it all back, make another list and connect them for a secret recipe!")
+    spiceList.append("Paprika")
+    spiceList.append("Cumin")
+    spiceList.append("Habanero")
+    spiceList.append("Cayenne")
+    spiceList.append("Oregano")
+    spiceList.append("Garlic")
+    spiceList.append("Jalapeno")
+    spiceList.append("Sage")
+    println(spiceList)
+
+    val ingredientList = LinkedList<String>()
+
+    println("And the ingredients are: ")
+    ingredientList.push("Water")
+    ingredientList.push("Salt")
+    ingredientList.push("Tomato")
+    ingredientList.push("Kidney Beans")
+    ingredientList.push("Black Beans")
+    ingredientList.push("Pinto Beans")
+    ingredientList.push("Stout")
+    ingredientList.push("Dark Chocolate")
+    ingredientList.append("sometimes Caramelized Onions")
+    println(ingredientList)
+
+    println("""Together they make my "Everything except the kitchen sink chili": """)
+
+    val fullList = LinkedList<String>()
+
+    fullList.connectLists(spiceList, ingredientList, fullList)
+
+    println(fullList)
+
+    fullList.append("Portabella Mushrooms as soon as the ale starts boiling down")
+    println("For the more adventurous: ")
+    println(fullList)
+    fullList.lastNode()
+
+    println("Penultimate: ${fullList.tail?.previous?.value}")
+
+
 
 }
