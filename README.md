@@ -1,3 +1,3 @@
 # Simple-Linked-List-in-Kotlin
-## Append, push, insert and delete any node as a string. 
+## Append, push, insert, remark or delete any node. 
 ## Connect two different lists or count the nodes.
