@@ -1,17 +1,20 @@
 
 
-class Node<A>(var value: A, var next: Node<A>? = null)
+class Node<A>(var value: A, var next: Node<A>? = null, var previous: Node<A>? = null)
 // Making next immutable is crucial.
 
 class LinkedList<A> {
     var head: Node<A>? = null
     // The head is the front of the list.
 
+    var tail: Node<A>? = null
+
     fun lastNode(): Node<A>? {
         var node = head
         return if (node != null) {
             while (node?.next != null)
                 node = node.next
+            tail = node
             node
             // Returns the node when the next one is null.
 
@@ -20,21 +23,32 @@ class LinkedList<A> {
 
     fun append(value: A) {
         val lastNode = this.lastNode()
-        if (lastNode != null)
-            lastNode.next = Node(value)
+        val newNode = Node(value)
+        if (lastNode != null) {
+            lastNode.next = newNode
+            newNode.previous = lastNode
+            lastNode()
+        }
         else head = Node(value)
         // Finds the last node and points its next at the new node.
     }
 
     fun push(value: A) {
         head = Node(value = value, next = head)
+        var node = head!!.next
+        node?.previous = Node(value)
+        lastNode()
         // Makes a new node and points the next at the head of the list.
     }
 
     fun insertAfter(prevNode: Node<A>, value: A) {
         val newNode = Node(value)
-        newNode.next = prevNode.next
+        val thirdInLine = prevNode.next
         prevNode.next = newNode
+        newNode.next = thirdInLine
+        newNode.previous = prevNode
+        thirdInLine?.previous = newNode
+        lastNode()
         // Changes next pointer of the chosen node to the new node which points at the node previously after the chosen.
     }
 
@@ -55,23 +69,30 @@ class LinkedList<A> {
     fun insertAtIndex(index: Int, value: A) {
         val newNode = Node(value)
         val node = nodeAtIndex(index)
+        val thirdInLine = node?.next
         if (node != null) {
             newNode.next = node.next
             node.next = newNode
+            newNode.previous = node
+            thirdInLine?.previous = newNode
+            lastNode()
             // Makes a new node and changes pointers based on index.
         }
     }
 
     fun removeNode(deletedNode: Node<A>) {
         var node = head
+        val nextInLine = deletedNode.next
         if (node != null) {
             while (node?.next != deletedNode)
-                // Finds the node before the node to be deleted.
-
                 node = node?.next
+            // Finds the node before the node to be deleted.
 
             if (node.next == deletedNode)
-                node.next = deletedNode.next
+                node.next = nextInLine
+            nextInLine?.previous = node
+
+            lastNode()
             // Changes the next pointer to point at the node after the node to be deleted.
         }
     }
@@ -164,7 +185,15 @@ fun main() {
     println("who really calls salt a spice?")
     spiceList.removeAtIndex(5)
     println(spiceList)
+    spiceList.lastNode()
+
+
     println("The list is now " + spiceList.getCountIterative() + " items long.")
+
+
+    println("The last node is: ${spiceList.tail?.value}")
+    println("Penultimate: ${spiceList.tail?.previous?.value}")
+
     spiceList.removeAll()
     println("The list is now " + spiceList.getCountRecursive() + " items long.")
 
