@@ -1,7 +1,5 @@
 
-
 class Node<A>(var value: A, var next: Node<A>? = null, var previous: Node<A>? = null)
-// Making next immutable is crucial.
 
 class LinkedList<A> {
     var head: Node<A>? = null
@@ -35,7 +33,7 @@ class LinkedList<A> {
 
     fun push(value: A) {
         head = Node(value = value, next = head)
-        val node = head!!.next
+        val node = head?.next
         node?.previous = Node(value)
         lastNode()
         // Makes a new node and points the next at the head of the list.
@@ -81,21 +79,16 @@ class LinkedList<A> {
     }
 
     fun removeNode(deletedNode: Node<A>) {
-        var node = head
-        val nextInLine = deletedNode.next
-        if (node != null) {
-            while (node?.next != deletedNode)
-                node = node?.next
-            // Finds the node before the node to be deleted.
-
-            if (node.next == deletedNode)
-                node.next = nextInLine
-            nextInLine?.previous = node
-
+        val nodeNext = deletedNode.next
+        val nodePrev = deletedNode.previous
+        if (nodePrev != null) {
+            nodePrev?.next = nodeNext
+            nodeNext?.previous = nodePrev
             lastNode()
+        }else head = nodeNext
             // Changes the next pointer to point at the node after the node to be deleted.
         }
-    }
+
 
     fun removeAtIndex(index: Int): Unit? {
         val node = nodeAtIndex(index)
@@ -151,11 +144,12 @@ class LinkedList<A> {
         val oldNext = oldNode?.next
         if (oldNode != null) {
             oldPrev?.next = newNode
+            oldNext?.previous = newNode
             newNode.previous = oldPrev
             newNode.next = oldNext
-            oldNext?.previous = newNode
-            lastNode()
+            // Connects the next and previous pointers of the previous, new and next nodes into a new list.
 
+            lastNode()
         } else head = newNode
 
     }
@@ -182,22 +176,16 @@ fun main() {
 
     spiceList.append("Salt")
     println(spiceList)
-
     spiceList.append("Garlic")
     println(spiceList)
-
     spiceList.push("Habanero")
     println(spiceList)
-
     spiceList.append("Jalapeno")
     println(spiceList)
-
     spiceList.push("Cumin")
     println(spiceList)
-
     spiceList.append("Sage")
     println(spiceList)
-
     spiceList.push("Paprika")
     println(spiceList)
 
@@ -216,6 +204,7 @@ fun main() {
     println("who really calls salt a spice?")
     spiceList.removeAtIndex(5)
     println(spiceList)
+
     spiceList.lastNode()
 // Use the lastNode function to make sure the tail is on the correct node.
 
@@ -267,7 +256,6 @@ fun main() {
 
     println("Penultimate: ${fullList.tail?.previous?.value}")
 
-
     println("For the southwest version: ")
 
     fullList.remark(4, "Black olives")
@@ -276,8 +264,10 @@ fun main() {
     fullList.remark(17, "or sometimes a sprinkle of any cheese and fresh onions")
     println(fullList)
 
+    fullList.removeAtIndex(0)
 
 
+    println(fullList)
 
 
 }
