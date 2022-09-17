@@ -110,12 +110,13 @@ class LinkedList<A> {
     fun countRecursive(node: Node<A>?): Int {
         return if (node == null) 0
         else 1 + countRecursive(node.next)
-        // Counts the total.
+        // Counts the total.  Is it really recursive?
     }
 
     fun getCountRecursive(): Int {
         return countRecursive(head)
     }
+
 
     fun removeAll() {
         head = null
@@ -261,6 +262,5 @@ fun main() {
     println("Any combination tastes good with a light hand on the spices.")
     fullList.removeAtIndex(0)
     println(fullList)
-
 
 }
