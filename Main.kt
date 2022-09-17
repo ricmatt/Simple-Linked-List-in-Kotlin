@@ -204,9 +204,6 @@ fun main() {
     spiceList.removeAtIndex(5)
     println(spiceList)
 
-    spiceList.lastNode()
-// Use the lastNode function to make sure the tail is on the correct node.
-
     println("The list is now " + spiceList.getCountIterative() + " items long.")
 
     println("The last node is: ${spiceList.tail?.value}")
@@ -245,13 +242,11 @@ fun main() {
     val fullList = LinkedList<String>()
 
     fullList.connectLists(spiceList, ingredientList, fullList)
-
     println(fullList)
 
     fullList.append("Portabella Mushrooms as soon as the ale starts boiling down")
     println("For the more adventurous: ")
     println(fullList)
-    fullList.lastNode()
 
     println("Penultimate: ${fullList.tail?.previous?.value}")
 
@@ -263,9 +258,8 @@ fun main() {
     fullList.remark(17, "or sometimes a sprinkle of any cheese and fresh onions")
     println(fullList)
 
+    println("Any combination tastes good with a light hand on the spices.")
     fullList.removeAtIndex(0)
-
-
     println(fullList)
 
 
