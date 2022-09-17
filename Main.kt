@@ -1,11 +1,11 @@
-
 class Node<A>(var value: A, var next: Node<A>? = null, var previous: Node<A>? = null)
 
 class LinkedList<A> {
     var head: Node<A>? = null
-    // The head is the front of the list.
+    // The head is the first node on the list.
 
     var tail: Node<A>? = null
+    // The tail is the final node on the list.
 
     fun lastNode(): Node<A>? {
         var node = head
@@ -58,7 +58,7 @@ class LinkedList<A> {
                 if (i == 0) return node
                 i -= 1
                 node = node.next
-                // Returns the node at a specific index.
+                // Returns the node at a specific index by counting down as it moves to the next nodes.
             }
         }
         return null
@@ -82,13 +82,12 @@ class LinkedList<A> {
         val nodeNext = deletedNode.next
         val nodePrev = deletedNode.previous
         if (nodePrev != null) {
-            nodePrev?.next = nodeNext
+            nodePrev.next = nodeNext
             nodeNext?.previous = nodePrev
             lastNode()
         }else head = nodeNext
             // Changes the next pointer to point at the node after the node to be deleted.
         }
-
 
     fun removeAtIndex(index: Int): Unit? {
         val node = nodeAtIndex(index)
