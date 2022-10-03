@@ -35,7 +35,6 @@ class LinkedList<A> {
         head = Node(value = value, next = head)
         val node = head?.next
         node?.previous = head
-        lastNode()
         // Makes a new node and points the next at the head of the list.
     }
 
@@ -46,7 +45,7 @@ class LinkedList<A> {
         newNode.next = thirdInLine
         newNode.previous = prevNode
         thirdInLine?.previous = newNode
-        lastNode()
+        if (thirdInLine == null) tail = newNode
         // Changes next pointer of the chosen node to the new node which points at the node previously after the chosen.
     }
 
@@ -73,7 +72,7 @@ class LinkedList<A> {
             node.next = newNode
             newNode.previous = node
             thirdInLine?.previous = newNode
-            lastNode()
+            if (thirdInLine == null) tail = newNode
             // Makes a new node and changes pointers based on index.
         } else head = newNode
     }
@@ -84,7 +83,7 @@ class LinkedList<A> {
         if (nodePrev != null) {
             nodePrev.next = nodeNext
             nodeNext?.previous = nodePrev
-            lastNode()
+            if (nodeNext == null) tail = nodePrev
         }else head = nodeNext
         // Changes the next pointer to point at the node after the node to be deleted.
     }
