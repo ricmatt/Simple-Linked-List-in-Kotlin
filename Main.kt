@@ -22,19 +22,19 @@ class LinkedList<A> {
     fun append(value: A) {
         val lastNode = this.lastNode()
         val newNode = Node(value)
+        tail = newNode
         if (lastNode != null) {
             lastNode.next = newNode
             newNode.previous = lastNode
-            lastNode()
         }
-        else head = Node(value)
+        else head = newNode
         // Finds the last node and points its next at the new node.
     }
 
     fun push(value: A) {
         head = Node(value = value, next = head)
         val node = head?.next
-        node?.previous = Node(value)
+        node?.previous = head
         lastNode()
         // Makes a new node and points the next at the head of the list.
     }
@@ -86,8 +86,8 @@ class LinkedList<A> {
             nodeNext?.previous = nodePrev
             lastNode()
         }else head = nodeNext
-            // Changes the next pointer to point at the node after the node to be deleted.
-        }
+        // Changes the next pointer to point at the node after the node to be deleted.
+    }
 
     fun removeAtIndex(index: Int): Unit? {
         val node = nodeAtIndex(index)
@@ -116,7 +116,6 @@ class LinkedList<A> {
     fun getCountRecursive(): Int {
         return countRecursive(head)
     }
-
 
     fun removeAll() {
         head = null
@@ -151,7 +150,41 @@ class LinkedList<A> {
 
             lastNode()
         } else head = newNode
+    }
 
+    fun middleNode(start: Node<A>?, last: Node<A>?): Node<A> {
+        var slow = start
+        var fast = start
+        while (fast?.next != last?.next) {
+            fast = fast?.next
+            if (fast?.next != last?.next) {
+                slow = slow?.next!!
+                fast = fast?.next
+                // Fast goes next twice until it hits null. Slow went half speed so it stops halfway.
+            }
+        }
+        return slow!!
+    }
+
+    fun binarySearch() {
+        // Think of it as a binary search if the user checks the boolean values.
+
+        var start = head
+        var last = tail
+        var middle : Node<A>
+        var userInput : String
+        println("Pick out an ingredient.")
+        do {
+            middle = middleNode(start, last)
+            println("The middle is ${middle.value}. Is it correct or is it before or after?")
+            userInput = readLine().toString()
+
+            when (userInput) {
+                "before" -> last = middle.previous
+                "after" -> start = middle.next
+            }
+        } while (userInput != "correct")
+        println("correct!")
     }
 
     override fun toString(): String {
@@ -262,5 +295,8 @@ fun main() {
     println("Any combination tastes good with a light hand on the spices.")
     fullList.removeAtIndex(0)
     println(fullList)
+
+    println("the middle is " + fullList.middleNode(fullList.head, fullList.tail).value)
+    fullList.binarySearch()
 
 }
